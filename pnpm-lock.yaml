@@ -10,6 +10,7 @@ specifiers:
   eslint: 8.27.0
   eslint-config-next: 13.0.3
   next: 13.0.3
+  pnpm: ^7.20.0
   postcss: ^8.4.19
   react: 18.2.0
   react-dom: 18.2.0
@@ -32,6 +33,7 @@ dependencies:
   eslint: 8.27.0
   eslint-config-next: 13.0.3_e3uo4sehh4zr4i6m57mkkxxv7y
   next: 13.0.3_biqbaboplfbrettd7655fr4n2y
+  pnpm: 7.20.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-icons: 4.6.0_react@18.2.0
@@ -1894,6 +1896,12 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /pnpm/7.20.0:
+    resolution: {integrity: sha512-klGp+P0sxw1f6OYwJtl0PcoYiIHVhMZdh9e2B8maUmzOGmAj0NL9jKaKPfIX4kKfyQcWeADm46Z+4CKtabZqSw==}
+    engines: {node: '>=14.6'}
+    hasBin: true
+    dev: false
 
   /postcss-import/14.1.0_postcss@8.4.19:
     resolution: {integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==}
