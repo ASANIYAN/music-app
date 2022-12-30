@@ -6,6 +6,7 @@ import NavbarDesktop from '../components/navbar/NavbarDesktop'
 import HeartIcon from '../public/icon/HeartIcon'
 import TopChartsSwiper, { ChartHeadingMobile } from '../components/TopChartsSwiper'
 import NewReleases, { NewReleasesHeading } from '../components/NewReleases'
+import { useQuery, useQueryClient } from 'react-query'
 
 
 type ChartProps = {
@@ -44,7 +45,26 @@ const Chart = ({ title, artist, duration, src }: ChartProps) => {
   )
 }
 
+const fetchSongRecommendations = async () => {
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'd1a1d608d6mshaaa12402f8d98b0p165bc3jsn0cb15378174a',
+      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+    }
+  };
+  const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/song/recommendations/?id=2396871', options)
+  return res.json();
+}
+
 export default function Home() {
+
+  // Access the client
+  const queryClient = useQueryClient();
+
+  // queries
+  const { data: recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
+  console.log(recommendation);
 
   const [openNav, setOpenNav] = useState(false);
   const HandleClick = () => {
