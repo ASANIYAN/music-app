@@ -49,8 +49,8 @@ const fetchSongRecommendations = async () => {
   const options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'd1a1d608d6mshaaa12402f8d98b0p165bc3jsn0cb15378174a',
-      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+      'X-RapidAPI-Key': process.env.RAPID_API_KEY as string,
+      'X-RapidAPI-Host': process.env.RAPID_API_HOST as string
     }
   };
   const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/song/recommendations/?id=2396871', options)
@@ -64,7 +64,7 @@ export default function Home() {
 
   // queries
   const { data: recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
-  console.log(recommendation);
+  // console.log(recommendation);
 
   const [openNav, setOpenNav] = useState(false);
   const HandleClick = () => {

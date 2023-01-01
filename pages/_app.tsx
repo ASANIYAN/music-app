@@ -18,7 +18,7 @@ const courier = Courier_Prime({
 
 export default function App({ Component, pageProps }: AppProps) {
   
-  const queryClient = new QueryClient()
+  const [queryClient] = useState(() => new QueryClient());
   const [openNav, setOpenNav] = useState(false);
   const router = useRouter();
   
