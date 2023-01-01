@@ -57,6 +57,8 @@ const fetchSongRecommendations = async () => {
   return res.json();
 }
 
+
+
 export default function Home() {
 
   // Access the client
@@ -64,7 +66,7 @@ export default function Home() {
 
   // queries
   const { data:recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
-  // console.log(recommendation.song_recommendations.recommendations);
+
 
   const [openNav, setOpenNav] = useState(false);
   const HandleClick = () => {

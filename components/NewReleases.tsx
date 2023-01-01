@@ -9,6 +9,7 @@ import { Autoplay, Keyboard, Pagination } from "swiper";
 
 import { ReactNode, useState } from "react";
 import Image from "next/image";
+import { useQuery, useQueryClient } from "react-query";
 
 export const NewReleasesHeading = () => {
     return (
@@ -24,13 +25,34 @@ type ReleaseProps = {
 const NewRelease = ({ title, src } : ReleaseProps ) => {
     return (
     <section className="max-w-[180px]">
-        <Image src={src} width={150} height={0} alt={`Release1`} className="rounded-[25px]" />
+        <Image src={src} width={150} height={10} alt={`Release1`} className="rounded-[25px]" />
         <small className="text-[12px] pl-3 font-normal"> {title} </small>
     </section>
     );
 }
 
+const fetchTopReleases = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
+        'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST as string
+      }
+    };
+    
+    const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/chart/albums/?per_page=10&page=1', options);
+    return res.json();
+  }
+
 const NewReleases = () => { 
+    
+  // Access the client
+  const queryClient = useQueryClient();
+
+  // queries
+  const { data:topReleases, status } = useQuery('releases', fetchTopReleases);
+  console.log(topReleases.chart_items);
+
     const releases = 
     [
         {title: "Life in a bubble", src:"/images/Release1.svg"}, 
@@ -88,9 +110,12 @@ const NewReleases = () => {
             modules={[Pagination, Keyboard]}
             className="mySwiper mt-2"
           >
-             { releases.map((release, index) => (
-            <SwiperSlide key={index}>
-                <NewRelease title={release.title} src={release.src} />
+             { topReleases.chart_items.map((releases:any ) => (
+            <SwiperSlide key={releases.item.id}>
+                <NewRelease 
+                title={releases.item.name} 
+                src={releases.item.cover_art_thumbnail_url} 
+                />
             </SwiperSlide>
             )) }
             
