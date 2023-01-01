@@ -29,9 +29,9 @@ const Chart = ({ title, artist, duration, src }: ChartProps) => {
   <>
     <section className='bg-navbar rounded-[20px] flex justify-between py-3 px-5 w-[360px] mt-4 cursor-pointer hover:shadow-md'>
       <section className='flex'>
-        <Image src={src} width={70} height={10} alt={"music_image"} />
+        <Image src={src} width={70} height={10} className="rounded-lg" alt={"music_image"} />
         <div className='font-normal ml-3'>
-          <p className=' text-[17px] title'> {title} </p>
+          <p className=' text-[17px] title truncate max-w-[200px]'> {title} </p>
           <p className='text-[12px] text-color2 artist'> {artist} </p>
           <p className='text-[12px] block duration'> {duration} </p>
         </div>
@@ -49,8 +49,8 @@ const fetchSongRecommendations = async () => {
   const options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': process.env.NEXT_PULIC_RAPID_API_KEY as string,
-      'X-RapidAPI-Host': process.env.NEXT_PULIC_RAPID_API_HOST as string
+      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
+      'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST as string
     }
   };
   const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/song/recommendations/?id=2396871', options)
@@ -63,8 +63,8 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   // queries
-  const { data: recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
-  console.log(recommendation);
+  const { data:recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
+  // console.log(recommendation.song_recommendations.recommendations);
 
   const [openNav, setOpenNav] = useState(false);
   const HandleClick = () => {
@@ -91,9 +91,17 @@ export default function Home() {
             </div>
           
           <section className='hidden xl:block ml-4'>
-            <h3 className='text-2xl font-semibold flex'>Top Charts</h3>
-            { charts.map((chart, index) => (
-              <Chart key={index} title={chart.title} artist={chart.artist} duration={chart.duration} src={chart.src} />
+            <h3 className='text-2xl font-semibold flex'>Top Recommendations</h3>
+            { status === 'success' && recommendation?.song_recommendations?.recommendations?.map((item: any) => (
+              <Chart 
+              key={item.recommended_song.id} 
+              title={item.recommended_song.title} 
+              artist={item.recommended_song.artist_names} 
+              duration={"1:22"} 
+              src={item.recommended_song.header_image_thumbnail_url ? 
+                item.recommended_song.header_image_thumbnail_url : 
+                "/images/Golden.svg"} 
+              />
             )) }
           </section>
 
