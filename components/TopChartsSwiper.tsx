@@ -14,7 +14,7 @@ import { Autoplay, Keyboard, Pagination } from "swiper";
 
 export const ChartHeadingMobile = () => {
     return (
-        <h3 className="font-semibold text-xl text-left text-color1"> Top Charts </h3>
+        <h3 className="font-semibold text-xl text-left text-color1"> Top Recommendations </h3>
     );
 }
 

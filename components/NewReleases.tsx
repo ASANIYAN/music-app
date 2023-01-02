@@ -10,6 +10,9 @@ import { Autoplay, Keyboard, Pagination } from "swiper";
 import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { useQuery, useQueryClient } from "react-query";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 export const NewReleasesHeading = () => {
     return (
@@ -51,26 +54,13 @@ const NewReleases = () => {
 
   // queries
   const { data:topReleases, status } = useQuery('releases', fetchTopReleases);
-  console.log(topReleases.chart_items);
-
-    const releases = 
-    [
-        {title: "Life in a bubble", src:"/images/Release1.svg"}, 
-        {title: "Life in a bubble", src:"/images/Release1.svg"}, 
-        {title: "Life in a bubble", src:"/images/Release1.svg"}, 
-        {title: "Mountain", src:"/images/Release2.svg"}, 
-        {title: "Mountain", src:"/images/Release2.svg"}, 
-        {title: "Mountain", src:"/images/Release2.svg"}, 
-        {title: "Limits", src:"/images/Release3.svg"},
-        {title: "Limits", src:"/images/Release3.svg"},
-        {title: "Limits", src:"/images/Release3.svg"},
-    ];
 
     return (
         <>
           <Swiper
             slidesPerView={2}
             spaceBetween={10}
+            loop={true}
             pagination={{
               clickable: true,
             }}
@@ -110,13 +100,13 @@ const NewReleases = () => {
             modules={[Pagination, Keyboard]}
             className="mySwiper mt-2"
           >
-             { topReleases.chart_items.map((releases:any ) => (
-            <SwiperSlide key={releases.item.id}>
-                <NewRelease 
-                title={releases.item.name} 
-                src={releases.item.cover_art_thumbnail_url} 
-                />
-            </SwiperSlide>
+            { status === 'success' && topReleases.chart_items.map((releases:any ) => (
+              <SwiperSlide key={releases.item.id}>
+                  <NewRelease 
+                  title={releases.item.name} 
+                  src={releases.item.cover_art_thumbnail_url} 
+                  />
+              </SwiperSlide>
             )) }
             
             <style jsx global >{`

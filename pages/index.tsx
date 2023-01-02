@@ -1,19 +1,20 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { ReactNode, useState } from 'react'
-import NavbarMobile from '../components/navbar/NavbarMobile'
 import NavbarDesktop from '../components/navbar/NavbarDesktop'
 import HeartIcon from '../public/icon/HeartIcon'
 import TopChartsSwiper, { ChartHeadingMobile } from '../components/TopChartsSwiper'
 import NewReleases, { NewReleasesHeading } from '../components/NewReleases'
 import { useQuery, useQueryClient } from 'react-query'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 type ChartProps = {
   title: string,
   artist: string,
   duration: ReactNode,
-  src: string
+  src: string,
 };
 
 
@@ -27,20 +28,20 @@ const Chart = ({ title, artist, duration, src }: ChartProps) => {
 
   return (
   <>
-    <section className='bg-navbar rounded-[20px] flex justify-between py-3 px-5 w-[360px] mt-4 cursor-pointer hover:shadow-md'>
-      <section className='flex'>
-        <Image src={src} width={70} height={10} className="rounded-lg" alt={"music_image"} />
-        <div className='font-normal ml-3'>
-          <p className=' text-[17px] title truncate max-w-[200px]'> {title} </p>
-          <p className='text-[12px] text-color2 artist'> {artist} </p>
-          <p className='text-[12px] block duration'> {duration} </p>
+      <section className='bg-navbar rounded-[20px] flex justify-between py-3 px-5 w-[360px] mt-4 cursor-pointer hover:shadow-md'>
+        <section className='flex'>
+          <Image src={src} width={70} height={10} className="rounded-lg" alt={"music_image"} />
+          <div className='font-normal ml-3'>
+            <p className=' text-[17px] title truncate max-w-[200px]'> {title} </p>
+            <p className='text-[12px] text-color2 artist'> {artist} </p>
+            <p className='text-[12px] block duration'> {duration} </p>
+          </div>
+        </section>
+        
+        <div className='h-[65px] flex justify-center items-center'>
+          <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
         </div>
       </section>
-      
-      <div className='h-[65px] flex justify-center items-center'>
-        <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
-      </div>
-    </section>
   </>
   )
 }
@@ -73,12 +74,6 @@ export default function Home() {
     setOpenNav(true);
   };
 
-  const charts = 
-  [
-    {title: "Golden age of 80s", artist: "Sean swadder", duration:"2:34:45",  src:"/images/Golden.svg"}, 
-    {title: 'Reggae “n” blues', artist: "Dj YK mule", duration:"1:02:42",  src:"/images/Reggae.svg"}, 
-    {title: "Tomorrow’s tunes", artist: "Obi Datti", duration:"2:01:25",  src:"/images/Tomorrow.svg"}
-  ]
 
   return (
     <>
@@ -94,6 +89,20 @@ export default function Home() {
           
           <section className='hidden xl:block ml-4'>
             <h3 className='text-2xl font-semibold flex'>Top Recommendations</h3>
+
+            { status === "loading" && 
+              <Skeleton 
+                width={360} 
+                height={90}
+                count={3} 
+                borderRadius={'1.25rem'} 
+                duration={2} 
+                baseColor={"#1A1E1F"} 
+                highlightColor={"rgba(239, 238, 224, 0.25)"} 
+                className="mt-4"
+              /> 
+            }
+            
             { status === 'success' && recommendation?.song_recommendations?.recommendations?.map((item: any) => (
               <Chart 
               key={item.recommended_song.id} 
