@@ -8,14 +8,9 @@ import NewReleases, { NewReleasesHeading } from '../components/NewReleases'
 import { useQuery, useQueryClient } from 'react-query'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import useFetchRecommendations from '../components/hooks/useFetchRecommendations'
+import { ChartProps } from '../props/types'
 
-
-type ChartProps = {
-  title: string,
-  artist: string,
-  duration: ReactNode,
-  src: string,
-};
 
 
 const Chart = ({ title, artist, duration, src }: ChartProps) => {
@@ -46,27 +41,10 @@ const Chart = ({ title, artist, duration, src }: ChartProps) => {
   )
 }
 
-const fetchSongRecommendations = async () => {
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
-      'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST as string
-    }
-  };
-  const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/song/recommendations/?id=2396871', options)
-  return res.json();
-}
-
-
-
 export default function Home() {
 
-  // Access the client
-  const queryClient = useQueryClient();
-
   // queries
-  const { data:recommendation, status } = useQuery('recommendations', fetchSongRecommendations);
+  const { data:recommendation, status } = useFetchRecommendations();
 
 
   const [openNav, setOpenNav] = useState(false);
@@ -118,7 +96,12 @@ export default function Home() {
 
           </section>
           
-          <Image src={"/images/hero_Home_mobile.svg"} width={500} height={70} alt={"hero-image-mobile"} className="mx-auto sm:hidden" />
+          <Image 
+          src={"/images/hero_Home_mobile.svg"} 
+          width={500} height={70} 
+          alt={"hero-image-mobile"} 
+          className="mx-auto sm:hidden" 
+          />
           
 
         </section>

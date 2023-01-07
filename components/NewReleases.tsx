@@ -7,11 +7,11 @@ import "swiper/css/pagination";
 // import required modules
 import { Autoplay, Keyboard, Pagination } from "swiper";
 
-import { ReactNode, useState } from "react";
 import Image from "next/image";
-import { useQuery, useQueryClient } from "react-query";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import Link from "next/link";
+import useFetchTopReleases from "./hooks/useFetchTopReleases";
 
 
 export const NewReleasesHeading = () => {
@@ -23,40 +23,37 @@ export const NewReleasesHeading = () => {
 type ReleaseProps = {
     title: string,
     src: string
+    id: number,
 };
 
-const NewRelease = ({ title, src } : ReleaseProps ) => {
+const NewRelease = ({ title, src, id } : ReleaseProps ) => {
     return (
-    <section className="max-w-[180px]">
+    <Link href={`/album/${id}`} className="max-w-[180px]">
         <Image src={src} width={150} height={10} alt={`Release1`} className="rounded-[25px]" />
         <small className="text-[12px] pl-3 font-normal"> {title} </small>
-    </section>
+    </Link>
     );
 }
 
-const fetchTopReleases = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
-        'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST as string
-      }
-    };
-    
-    const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/chart/albums/?per_page=10&page=1', options);
-    return res.json();
-  }
 
 const NewReleases = () => { 
-    
-  // Access the client
-  const queryClient = useQueryClient();
 
   // queries
-  const { data:topReleases, status } = useQuery('releases', fetchTopReleases);
+  const { data:topReleases, status } = useFetchTopReleases();
 
     return (
         <>
+          { status === "loading" && 
+              <Skeleton 
+                width={'100%'} 
+                height={150}
+                borderRadius={'1.25rem'} 
+                duration={2} 
+                baseColor={"#1A1E1F"} 
+                highlightColor={"rgba(239, 238, 224, 0.25)"} 
+                className="mt-4"
+              /> 
+          } 
           <Swiper
             slidesPerView={2}
             spaceBetween={10}
@@ -102,7 +99,8 @@ const NewReleases = () => {
           >
             { status === 'success' && topReleases.chart_items.map((releases:any ) => (
               <SwiperSlide key={releases.item.id}>
-                  <NewRelease 
+                  <NewRelease
+                  id={releases.item.id} 
                   title={releases.item.name} 
                   src={releases.item.cover_art_thumbnail_url} 
                   />

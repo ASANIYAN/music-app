@@ -10,6 +10,9 @@ import HeartIcon from "../public/icon/HeartIcon";
 import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { Autoplay, Keyboard, Pagination } from "swiper";
+import { ChartProps } from '../props/types';
+import useFetchRecommendations from './hooks/useFetchRecommendations';
+import Skeleton from 'react-loading-skeleton';
 
 
 export const ChartHeadingMobile = () => {
@@ -19,15 +22,8 @@ export const ChartHeadingMobile = () => {
 }
 
 
-type ChartProps = {
-    title: string,
-    artist: string,
-    duration: ReactNode,
-    src: string
-  };
-
 const ChartMobile = ({ title, artist, duration, src }: ChartProps) => {
-
+    
     const [like, setLike] = useState(false);
   
     const handleLike = () => {
@@ -57,6 +53,9 @@ const ChartMobile = ({ title, artist, duration, src }: ChartProps) => {
 
 
 const TopChartsSwiper = () => {
+
+  // queries
+  const { data:recommendation, status } = useFetchRecommendations();
     
     const charts = 
     [
@@ -70,56 +69,76 @@ const TopChartsSwiper = () => {
 
     return (
         <>
-          <Swiper
-            slidesPerView={1}
-            spaceBetween={10}
-            pagination={{
-              clickable: true,
-            }}
-            keyboard={{
-              enabled: true,
-            }}
-            // autoplay={{
-            //   delay: 2500,
-            //   disableOnInteraction: false,
-            // }}
-            breakpoints={{
-                320: {
-                    slidesPerView: 1,
-                    // spaceBetween: 30,
-                },
-                500: {
-                    slidesPerView: 2,
-                    spaceBetween: 30
-                },
-                640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 2,
-                    spaceBetween: 30,
-                },
-                860: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                },
-                1024: {
-                    slidesPerView: 3,
-                    spaceBetween: 60,
-                },
-                1200: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
-                }
-            }}
-            modules={[Pagination, Keyboard]}
-            className="mySwiper"
+            { status === "loading" && 
+              <Skeleton 
+                width={'100%'} 
+                height={150}
+                borderRadius={'1.25rem'} 
+                duration={2} 
+                baseColor={"#1A1E1F"} 
+                highlightColor={"rgba(239, 238, 224, 0.25)"} 
+                className="mt-4"
+              /> 
+          } 
+            <Swiper
+                slidesPerView={1}
+                spaceBetween={10}
+                pagination={{
+                clickable: true,
+                }}
+                keyboard={{
+                enabled: true,
+                }}
+                // autoplay={{
+                //   delay: 2500,
+                //   disableOnInteraction: false,
+                // }}
+                breakpoints={{
+                    320: {
+                        slidesPerView: 1,
+                        // spaceBetween: 30,
+                    },
+                    500: {
+                        slidesPerView: 2,
+                        spaceBetween: 30
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 30,
+                    },
+                    860: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 60,
+                    },
+                    1200: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                    }
+                }}
+                modules={[Pagination, Keyboard]}
+                className="mySwiper"
           >
-             { charts.map((chart, index) => (
-            <SwiperSlide key={index}>
-                <ChartMobile  title={chart.title} artist={chart.artist} duration={chart.duration} src={chart.src} />
-            </SwiperSlide>
+             { status === 'success' && recommendation?.song_recommendations?.recommendations?.map((item: any) => (
+                <SwiperSlide 
+                key={item.recommended_song.id}
+                >
+                    <ChartMobile     
+                    title={item.recommended_song.title} 
+                    artist={item.recommended_song.artist_names} 
+                    duration={"1:22"} 
+                    src={item.recommended_song.header_image_thumbnail_url ? 
+                        item.recommended_song.header_image_thumbnail_url : 
+                        "/images/Golden.svg"}  
+                    />
+                </SwiperSlide>
             )) }
 
             <style jsx global >{`
