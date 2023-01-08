@@ -1,18 +1,73 @@
 import Image from "next/image";
+import { ReactNode, useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdPlaylistAdd } from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
+import { headers } from "../../components/api-headers";
 import NavbarDesktop from "../../components/navbar/NavbarDesktop";
 import SongItem from "../../components/SongItem";
 
-const AlbumInfo = () => {
+
+export const getStaticPaths = async (): Promise<{
+  paths: { params: { id: string } }[];
+  fallback: boolean;
+}> => {
+  const options = {
+    method: 'GET',
+    headers: headers,
+  };
+  const res = await fetch('https://genius-song-lyrics1.p.rapidapi.com/chart/albums/?per_page=10&page=1', options);
+  const data = await res.json();
+
+  let paths = data?.chart_items?.map((chartItem: any) => {
+    return {
+        params: { id: chartItem.item.id.toString() }
+    }
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+type StaticProps = {
+  params: {
+    id: string;
+  };
+};
+
+export const getStaticProps = async ({ params }: StaticProps) => {
+  const id = params.id;
+  const options = {
+    method: 'GET',
+    // params: {id, per_page: '20', page: '1'},
+    headers: headers,
+  };
+//   useQuery('releases', fetchTopReleases);
+  const res = await fetch(`https://genius-song-lyrics1.p.rapidapi.com/album/appearances/?id=${id}&per_page=20&page=1`, options);
+  const data = await res.json();
+
+  return {
+    props: {item: data}
+  }
+};
+
+type albumProp = {
+    item: { album_appearances: Array<any> }
+}
+
+const AlbumInfo = ({ item }: albumProp) => {
+
+    // console.log(item);
+    const [isLoading, setIsLoading] = useState(true);
     
-    const songs = 
-    [
-        {title: "Golden age of 80s", artist: "Sean swadder", duration:"2:45", type: "single", src:"/images/Golden.svg"}, 
-        {title: "Tomorrow’s tunes", artist: "Obi Datti", duration:"2:01", type: "single", src:"/images/Tomorrow.svg"},
-        {title: 'Reggae “n” blues', artist: "Dj YK mule", duration:"1:02", type: "single", src:"/images/Reggae.svg"}, 
-        {title: "Tomorrow’s tunes", artist: "Obi Datti", duration:"2:25", type: "single", src:"/images/Tomorrow.svg"}
-    ]
+    useEffect(() => {
+        if (item) {
+            setIsLoading(false);
+        }
+    }, [item])
 
     return (
         <>
@@ -46,10 +101,29 @@ const AlbumInfo = () => {
                     </section>
                 </section>
             </section>
+            
+                { isLoading &&
+                    <Skeleton 
+                    width={'100%'}
+                    height={50}
+                    borderRadius={'0.9375rem'} 
+                    duration={2} 
+                    baseColor={"rgba(51, 55, 59, 0.37)"} 
+                    highlightColor={"rgba(239, 238, 224, 0.25)"} 
+                    className="z-10 mt-2 md:ml-4"
+                    count={4}
+                    />
+                }
 
-            { songs.map((song, index) => (
-                <section key={index}  className="z-10 mt-2 md:ml-4">
-                    <SongItem title={song.title} artist={song.artist} duration={song.duration} src={song.src} type={song.type} />
+            { !isLoading && item.album_appearances.map((item) => (
+                <section key={item.id}  className="z-10 mt-2 md:ml-4">
+                    <SongItem 
+                    title={item.song.title} 
+                    artist={item.song.artist_names}
+                    path={item.song.api_path} 
+                    duration={"1:00"} 
+                    src={item.song.song_art_image_thumbnail_url} 
+                    type={item.song._type} />
                 </section>
             ))} 
           </section>

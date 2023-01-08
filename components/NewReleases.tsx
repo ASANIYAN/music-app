@@ -40,6 +40,7 @@ const NewReleases = () => {
 
   // queries
   const { data:topReleases, status } = useFetchTopReleases();
+  // console.log(topReleases);
 
     return (
         <>
@@ -97,7 +98,7 @@ const NewReleases = () => {
             modules={[Pagination, Keyboard]}
             className="mySwiper mt-2"
           >
-            { status === 'success' && topReleases.chart_items.map((releases:any ) => (
+            { status === 'success' && topReleases?.chart_items?.map((releases:any ) => (
               <SwiperSlide key={releases.item.id}>
                   <NewRelease
                   id={releases.item.id} 

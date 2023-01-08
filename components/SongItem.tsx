@@ -10,9 +10,10 @@ type SongItemProps = {
     duration: ReactNode,
     src: string,
     type: string,
+    path: string,
   };
 
-const SongItem = ({ title, artist, duration, src, type }: SongItemProps) => {
+const SongItem = ({ title, artist, duration, src, type, path }: SongItemProps) => {
     const [like, setLike] = useState(false);
   
     const handleLike = () => {

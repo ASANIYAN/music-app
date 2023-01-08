@@ -30,8 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <main className={`${courier.variable} font-courier`}>
         { router.pathname === '/album/[id]' && 
-        <div 
-        className='bg-[url(/images/Lead-image.svg)] bg-center bg-cover bg-no-repeat fixed top-0 left-0 bottom-0 right-0 opacity-10 -z-10'
+        <div
+        style={{background: 'url(/images/Lead-image.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}
+        className={`bg-center bg-cover bg-no-repeat fixed top-0 left-0 bottom-0 right-0 opacity-10 -z-10`}
         >
         </div>
         }
