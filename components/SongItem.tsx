@@ -15,10 +15,16 @@ type SongItemProps = {
 
 const SongItem = ({ title, artist, duration, src, type, path }: SongItemProps) => {
     const [like, setLike] = useState(false);
+    const [toopTip, setToolTip] = useState(false);
   
     const handleLike = () => {
       setLike(like => !like)
     };
+
+    const handleToolTip = () => {
+        setToolTip(toolTip => !toolTip);
+    }
+
     return (
         <>
             <section className="bg-color8 flex sm:justify-between items-center py-2 sm:py-1.5 pl-2 sm:pl-5  rounded-[15px] w-full">
@@ -32,9 +38,18 @@ const SongItem = ({ title, artist, duration, src, type, path }: SongItemProps) =
                     <p className="title max-w-[200px]"> { title } ~ { artist } </p>
                     <p className="type"> { type } </p>
                 </div>
-                <div className="flex flex-col-reverse items-center ml-auto sm:flex-row sm:justify-around sm:flex-grow pr-2 sm:pr-0">
+                <div className="flex flex-col-reverse items-center ml-auto sm:flex-row sm:justify-around sm:flex-grow pr-2 sm:pr-0 relative">
                     <p className="duration mt-1 sm:mt-0"> { duration } </p>
-                    <Image src={Vertical} height={16} width={16} alt="musicImg" className="" />
+                    <div>
+                        <Image src={Vertical} height={16} width={16} alt="musicImg" className="cursor-pointer" onClick={handleToolTip} />
+                        { toopTip && 
+                            <p 
+                            className="bg-navbar p-1 w-32 -translate-y-11 absolute text-[12px] cursor-pointer hover:bg-color4 rounded-md"
+                            >
+                                Add To Collection
+                            </p> 
+                        }
+                    </div>
                 </div>
             </section>
         </>

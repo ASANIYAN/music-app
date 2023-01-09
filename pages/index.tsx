@@ -9,15 +9,24 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useFetchRecommendations from '../components/hooks/useFetchRecommendations'
 import { ChartProps } from '../props/types'
+import { useMyStore } from '../app/store'
 
 
 
-const Chart = ({ title, artist, duration, src }: ChartProps) => {
+const Chart = ({ title, artist, duration, src, type, id }: ChartProps) => {
 
+  const addLikes = useMyStore((state: any) => state.addLikes);
+  const removeLikes = useMyStore((state: any) => state.removeLikes);
+  const likes = useMyStore((state: any) => state.likes);
+  console.log(likes);
   const [like, setLike] = useState(false);
 
-  const handleLike = () => {
+  const handleLike = ( title: string, artist: string, src: string, type: string, id: number ) => {
     setLike(like => !like)
+    if(like) {
+      addLikes(title, artist, src, type, id);
+    }
+    removeLikes(id);
   };
 
   return (
@@ -33,7 +42,7 @@ const Chart = ({ title, artist, duration, src }: ChartProps) => {
         </section>
         
         <div className='h-[65px] flex justify-center items-center'>
-          <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
+          <HeartIcon color='#E5524A' like={like} handleLike={() =>handleLike(title, artist, src, type, id)} />
         </div>
       </section>
   </>
@@ -85,7 +94,9 @@ export default function Home() {
               key={item.recommended_song.id} 
               title={item.recommended_song.title} 
               artist={item.recommended_song.artist_names} 
-              duration={"1:22"} 
+              duration={"1:22"}
+              id={item.recommended_song.id}
+              type={item.recommended_song._type}
               src={item.recommended_song.header_image_thumbnail_url ? 
                 item.recommended_song.header_image_thumbnail_url : 
                 "/images/Golden.svg"} 

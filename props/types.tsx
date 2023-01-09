@@ -5,4 +5,6 @@ export type ChartProps = {
     artist: string,
     duration: ReactNode,
     src: string,
+    type: string,
+    id: number,
 };

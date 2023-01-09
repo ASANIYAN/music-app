@@ -116,7 +116,7 @@ const AlbumInfo = ({ item }: albumProp) => {
                 }
 
             { !isLoading && item.album_appearances.map((item) => (
-                <section key={item.id}  className="z-10 mt-2 md:ml-4">
+                <section key={item.id}  className="z-10 mt-3 md:ml-4">
                     <SongItem 
                     title={item.song.title} 
                     artist={item.song.artist_names}
