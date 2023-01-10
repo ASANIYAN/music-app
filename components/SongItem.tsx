@@ -2,7 +2,10 @@ import Image from "next/image";
 import Reggae  from "../public/images/Reggae.svg";
 import HeartIcon from "../public/icon/HeartIcon";
 import Vertical from "../public/images/more-vertical.svg";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import { useMyStore } from "../app/store";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import useOutsideAlerter from "./hooks/useOutsideAlerter";
 
 type SongItemProps = {
     title: string,
@@ -11,19 +14,31 @@ type SongItemProps = {
     src: string,
     type: string,
     path: string,
+    id: number
   };
 
-const SongItem = ({ title, artist, duration, src, type, path }: SongItemProps) => {
+const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProps) => {
     const [like, setLike] = useState(false);
     const [toopTip, setToolTip] = useState(false);
-  
+
+    const likes = useMyStore((state:any) => state.likes );
+    const collection = useMyStore((state:any) => state.collection );
+    const addLikes = useMyStore((state: any) => state.addLikes);
+    const removeLikes = useMyStore((state: any) => state.removeLikes);
+    const addCollection = useMyStore((state: any) => state.addCollection);
+    const removeCollection = useMyStore((state: any) => state.removeCollection);
+    console.log(likes);
+    
     const handleLike = () => {
-      setLike(like => !like)
+        setLike(like => !like)
     };
 
     const handleToolTip = () => {
         setToolTip(toolTip => !toolTip);
     }
+    
+    const buttonRef = useRef<null>(null);
+    useOutsideAlerter(buttonRef, setToolTip);
 
     return (
         <>
@@ -41,10 +56,16 @@ const SongItem = ({ title, artist, duration, src, type, path }: SongItemProps) =
                 <div className="flex flex-col-reverse items-center ml-auto sm:flex-row sm:justify-around sm:flex-grow pr-2 sm:pr-0 relative">
                     <p className="duration mt-1 sm:mt-0"> { duration } </p>
                     <div>
-                        <Image src={Vertical} height={16} width={16} alt="musicImg" className="cursor-pointer" onClick={handleToolTip} />
+                        <div ref={buttonRef} onClick={handleToolTip} className='w-fit'>
+                            <Image 
+                            src={Vertical} height={16} width={16} 
+                            alt="musicImg" 
+                            className="cursor-pointer"
+                             />
+                        </div>
                         { toopTip && 
                             <p 
-                            className="bg-navbar p-1 w-32 -translate-y-11 absolute text-[12px] cursor-pointer hover:bg-color4 rounded-md"
+                            className="bg-navbar p-1 w-32 -translate-y-11 -translate-x-24 absolute text-[12px] cursor-pointer hover:bg-color4 rounded-md"
                             >
                                 Add To Collection
                             </p> 

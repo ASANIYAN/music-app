@@ -90,11 +90,11 @@ const AlbumInfo = ({ item }: albumProp) => {
                             <span className="song_count">64 songs -</span><span className="total_Time"> 16hrs+</span>
                         </div>
                     </div>
-                    <section className="text-white mt-6 flex md:justify-start ">
-                        <button className="p-2 sm:p-3.5 bg-color8 flex items-center backdrop-blur-lg rounded-[32px] mr-3"> 
+                    <section className="text-white mt-6 flex-col sm:flex-row flex md:justify-start ">
+                        <button className="p-2 sm:p-3.5 bg-color8 flex items-center backdrop-blur-lg rounded-[32px] mr-3 w-fit"> 
                             <BsFillPlayFill className="bg-color4 text-white rounded-3xl text-xl sm:text-2xl text-center p-1 mr-2.5" />  Play all 
                         </button>
-                        <button className="p-2 sm:p-3.5 bg-color8 flex items-center backdrop-blur-lg rounded-[32px]"> 
+                        <button className="p-2 sm:p-3.5 bg-color8 flex items-center backdrop-blur-lg rounded-[32px] mt-3 sm:mt-0 w-fit"> 
                             <MdPlaylistAdd className="bg-color4 text-white rounded-3xl text-xl sm:text-2xl text-center p-1 mr-2.5" />  
                             Add to collection 
                         </button>
@@ -117,7 +117,8 @@ const AlbumInfo = ({ item }: albumProp) => {
 
             { !isLoading && item.album_appearances.map((item) => (
                 <section key={item.id}  className="z-10 mt-3 md:ml-4">
-                    <SongItem 
+                    <SongItem
+                    id={item.id}
                     title={item.song.title} 
                     artist={item.song.artist_names}
                     path={item.song.api_path} 
