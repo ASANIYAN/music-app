@@ -13,7 +13,7 @@ import { Autoplay, Keyboard, Pagination } from "swiper";
 import { ChartProps } from '../props/types';
 import useFetchRecommendations from './hooks/useFetchRecommendations';
 import Skeleton from 'react-loading-skeleton';
-import { useMyStore } from '../app/store';
+import { useMyStore } from './app/store';
 
 
 export const ChartHeadingMobile = () => {

@@ -9,7 +9,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useFetchRecommendations from '../components/hooks/useFetchRecommendations'
 import { ChartProps } from '../props/types'
-import { useMyStore } from '../app/store'
+import { useMyStore } from '../components/app/store'
 
 
 

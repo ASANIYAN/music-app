@@ -3,8 +3,7 @@ import Reggae  from "../public/images/Reggae.svg";
 import HeartIcon from "../public/icon/HeartIcon";
 import Vertical from "../public/images/more-vertical.svg";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { useMyStore } from "../app/store";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { useMyStore } from "./app/store";
 import useOutsideAlerter from "./hooks/useOutsideAlerter";
 
 type SongItemProps = {
@@ -27,11 +26,20 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const removeLikes = useMyStore((state: any) => state.removeLikes);
     const addCollection = useMyStore((state: any) => state.addCollection);
     const removeCollection = useMyStore((state: any) => state.removeCollection);
+    // console.log(likes);
     console.log(likes);
     
-    const handleLike = () => {
-        setLike(like => !like)
-    };
+    
+
+    const handleLike = ( title: string, artist: string, src: string, type: string, id: number ) => {
+        if(!like) {
+            setLike(true);
+            addLikes({title, artist, src, type, id})
+        } else {
+            setLike(false);
+            removeLikes(id);
+        }
+      };
 
     const handleToolTip = () => {
         setToolTip(toolTip => !toolTip);
@@ -46,11 +54,11 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
                 <div className="flex">
                     <Image src={src} height={40} width={40} alt="musicImg" className="mr-2" />
                     <div className="w-fit ml-5 justify-center items-center hidden sm:flex">
-                        <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
+                        <HeartIcon color='#E5524A' like={like} handleLike={() => handleLike(title, artist, src, type, id)} />
                     </div>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:flex-grow sm:justify-around sm:items-center text-sm pl-2 sm:pl-0">
-                    <p className="title max-w-[200px]"> { title } ~ { artist } </p>
+                    <p className="title max-w-[200px] w-[200px]"> { title } ~ { artist } </p>
                     <p className="type"> { type } </p>
                 </div>
                 <div className="flex flex-col-reverse items-center ml-auto sm:flex-row sm:justify-around sm:flex-grow pr-2 sm:pr-0 relative">
