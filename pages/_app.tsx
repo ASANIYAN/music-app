@@ -9,6 +9,8 @@ import { useState } from 'react';
 import Player from '../components/Player';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const courier = Courier_Prime({
     subsets: ['latin'],
@@ -28,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ToastContainer />
       <main className={`${courier.variable} font-courier`}>
         { router.pathname === '/album/[id]' && 
         <div

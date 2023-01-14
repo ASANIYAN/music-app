@@ -22,11 +22,13 @@ const Chart = ({ title, artist, duration, src, type, id }: ChartProps) => {
   const [like, setLike] = useState(false);
 
   const handleLike = ( title: string, artist: string, src: string, type: string, id: number ) => {
-    setLike(like => !like)
-    if(like) {
-      addLikes(title, artist, src, type, id);
+    if(!like) {
+        setLike(true);
+        addLikes({title, artist, src, type, id})
+    } else {
+        setLike(false);
+        removeLikes(id);
     }
-    removeLikes(id);
   };
 
   return (

@@ -5,6 +5,7 @@ import Vertical from "../public/images/more-vertical.svg";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useMyStore } from "./app/store";
 import useOutsideAlerter from "./hooks/useOutsideAlerter";
+import {SuccessToast } from "../toast/toasts";
 
 type SongItemProps = {
     title: string,
@@ -27,7 +28,7 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const addCollection = useMyStore((state: any) => state.addCollection);
     const removeCollection = useMyStore((state: any) => state.removeCollection);
     // console.log(likes);
-    console.log(likes);
+    // console.log(likes);
     
     
 
@@ -44,9 +45,15 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const handleToolTip = () => {
         setToolTip(toolTip => !toolTip);
     }
+
+    const handleAddToCollection = (title: string, artist: string, src: string, type: string, id: number) => {
+        SuccessToast('Added To Collections');
+        console.log('collection');
+    }
     
-    const buttonRef = useRef<null>(null);
-    useOutsideAlerter(buttonRef, setToolTip);
+    const ItemRef = useRef<null>(null);
+    // const buttonRef = useRef<null>(null);
+    useOutsideAlerter(ItemRef, setToolTip);
 
     return (
         <>
@@ -64,20 +71,23 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
                 <div className="flex flex-col-reverse items-center ml-auto sm:flex-row sm:justify-around sm:flex-grow pr-2 sm:pr-0 relative">
                     <p className="duration mt-1 sm:mt-0"> { duration } </p>
                     <div>
-                        <div ref={buttonRef} onClick={handleToolTip} className='w-fit'>
+                        <div ref={ItemRef} onClick={handleToolTip} className='w-fit'>
                             <Image 
                             src={Vertical} height={16} width={16} 
                             alt="musicImg" 
                             className="cursor-pointer"
                              />
-                        </div>
                         { toopTip && 
-                            <p 
-                            className="bg-navbar p-1 w-32 -translate-y-11 -translate-x-24 absolute text-[12px] cursor-pointer hover:bg-color4 rounded-md"
+                            <p
+                            // ref={buttonRef}
+                            onClick={() => handleAddToCollection(title, artist, src, type, id)}
+                            className="bg-navbar p-1 w-32 -translate-y-11 -translate-x-24 absolute text-[12px] cursor-pointer 
+                            hover:bg-color4 rounded-md"
                             >
                                 Add To Collection
                             </p> 
                         }
+                        </div>
                     </div>
                 </div>
             </section>
