@@ -28,11 +28,12 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const addCollection = useMyStore((state: any) => state.addCollection);
     const removeCollection = useMyStore((state: any) => state.removeCollection);
     // console.log(likes);
+    console.log(collection);
     // console.log(likes);
     
     
 
-    const handleLike = ( title: string, artist: string, src: string, type: string, id: number ) => {
+    const handleLike = () => {
         if(!like) {
             setLike(true);
             addLikes({title, artist, src, type, id})
@@ -40,15 +41,16 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
             setLike(false);
             removeLikes(id);
         }
-      };
+    };
 
     const handleToolTip = () => {
         setToolTip(toolTip => !toolTip);
     }
 
-    const handleAddToCollection = (title: string, artist: string, src: string, type: string, id: number) => {
+    const handleAddToCollection = () => {
+        addCollection({title, artist, src, type, id});
         SuccessToast('Added To Collections');
-        console.log('collection');
+        // console.log('collection');
     }
     
     const ItemRef = useRef<null>(null);
@@ -61,7 +63,7 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
                 <div className="flex">
                     <Image src={src} height={40} width={40} alt="musicImg" className="mr-2" />
                     <div className="w-fit ml-5 justify-center items-center hidden sm:flex">
-                        <HeartIcon color='#E5524A' like={like} handleLike={() => handleLike(title, artist, src, type, id)} />
+                        <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
                     </div>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:flex-grow sm:justify-around sm:items-center text-sm pl-2 sm:pl-0">
@@ -80,7 +82,7 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
                         { toopTip && 
                             <p
                             // ref={buttonRef}
-                            onClick={() => handleAddToCollection(title, artist, src, type, id)}
+                            onClick={handleAddToCollection}
                             className="bg-navbar p-1 w-32 -translate-y-11 -translate-x-24 absolute text-[12px] cursor-pointer 
                             hover:bg-color4 rounded-md"
                             >

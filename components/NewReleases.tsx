@@ -30,7 +30,7 @@ const NewRelease = ({ title, src, id } : ReleaseProps ) => {
     return (
     <Link href={`/album/${id}`} className="max-w-[180px]">
         <Image src={src} width={150} height={10} alt={`Release1`} className="rounded-[25px]" />
-        <small className="text-[12px] pl-3 font-normal"> {title} </small>
+        <small className="text-[12px] px-3 font-normal"> {title} </small>
     </Link>
     );
 }

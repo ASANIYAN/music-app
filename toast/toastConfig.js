@@ -5,7 +5,8 @@ export const toastSuccessConfig = {
   pauseOnFocusLoss: false,
   pauseOnHover: false,
   hideProgressBar: true,
-  theme: "dark",
+  autoClose: 3000,
+  // theme: "dark",
 };
 
 export const toastErrorConfig = {

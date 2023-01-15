@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   padding: 0;
@@ -15,9 +19,10 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+.Toastify__toast {
+  @apply bg-main;
 }
+
 
 @media (prefers-color-scheme: dark) {
   html {
