@@ -1,32 +1,43 @@
+import { useState } from "react";
+import { useMyStore } from "../app/store";
+
 const MyCollections = () => {
     
-  const album = 
-  [
-    {title: 'Reggae “n” blues', artist: "Dj YK mule", duration:"1:02:42",  src:"/images/Reggae.svg"}, 
-    {title: "Golden age of 80s", artist: "Sean swadder", duration:"2:34:45",  src:"/images/Golden.svg"}, 
-    {title: 'Reggae “n” blues', artist: "Dj YK mule", duration:"1:02:42",  src:"/images/Reggae.svg"}, 
-    {title: "Tomorrow’s tunes", artist: "Obi Datti", duration:"2:01:25",  src:"/images/Tomorrow.svg"},
-    {title: "Golden age of 80s", artist: "Sean swadder", duration:"2:34:45",  src:"/images/Golden.svg"}, 
-    {title: 'Reggae “n” blues', artist: "Dj YK mule", duration:"1:02:42",  src:"/images/Reggae.svg"}, 
-    {title: "Tomorrow’s tunes", artist: "Obi Datti", duration:"2:01:25",  src:"/images/Tomorrow.svg"}
-  ]
+    const collection = useMyStore((state:any) => state.collection );
+    const [hover, setHover] = useState(false);
+
     return (
         <>
-            <section className="grid grid-cols-collection gap-6 w-full">
-                {
-                    album.map((item, index) => (
-                    <div 
-                    key={index} 
-                    className={`h-[240px] w-full rounded-[20px]`}
-                    style={{background: `url(${item.src})`,backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'}}
-                    >
-                        <div className="flex flex-col justify-end pl-6 pb-6 h-full">
-                            <p className="text-lg md:text-2xl"> {item.title} </p>
-                            <p className="text-[10px] -mt-1"> {item.artist} </p>
+            { collection.length > 0 && 
+                <section className="grid grid-cols-collection gap-6 w-full">
+                    {
+                        collection.map((item: any) => (
+                        <div 
+                        key={item.id} 
+                        className={`h-[240px] w-full rounded-[20px] relative`}
+                        style=
+                        {{
+                            background: `url(${item.src})`,
+                            backgroundSize: 'cover', 
+                            backgroundRepeat: 'no-repeat', 
+                            backgroundPosition: 'center'
+                        }}
+                        >
+                            <div className="flex flex-col justify-end pl-6 pb-6 h-full" 
+                            >
+                                <p className="text-lg md:text-2xl"> {item.title} </p>
+                                <p className="text-[10px] -mt-1"> {item.artist} </p>
+                            </div>
+                            <div 
+                            className={`absolute hoverDiv inset-0 bg-gray-900 opacity-0 transition-opacity duration-150`}>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </section>
+                    ))}
+                </section>
+            }
+            { collection.length === 0 && ( 
+                <p className="text-2xl text-center"> You have no collection </p>
+            )}
         </>
     );
 }

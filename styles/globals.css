@@ -19,10 +19,6 @@ a {
   text-decoration: none;
 }
 
-.Toastify__toast {
-  @apply bg-main;
-}
-
 
 @media (prefers-color-scheme: dark) {
   html {

@@ -1,3 +1,4 @@
+import { AiFillExclamationCircle } from 'react-icons/ai';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 
 export const toastSuccessConfig = {
@@ -10,7 +11,9 @@ export const toastSuccessConfig = {
 };
 
 export const toastErrorConfig = {
+  icon:<AiFillExclamationCircle size={30} className='text-red-600' />,
   pauseOnFocusLoss: false,
   pauseOnHover: false,
   hideProgressBar: true,
+  autoClose: 3000,
 };

@@ -3,6 +3,7 @@ import Likes from "../components/collections/Likes";
 import MyCollections from "../components/collections/MyCollections";
 import NavbarDesktop from "../components/navbar/NavbarDesktop";
 import Tab from "../components/tab/Tab";
+import '../styles/Collections.module.css'
 
 const Collections = () => {
     const tabList = 
@@ -22,7 +23,7 @@ const Collections = () => {
                 <Tab tabs={tabList} activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className="mt-3 w-full">
                     { activeTab === tabList[0].alias && <MyCollections /> } 
-                    { activeTab === tabList[0].alias && <Likes /> } 
+                    { activeTab === tabList[1].alias && <Likes /> } 
                 </div>
 
             </section>

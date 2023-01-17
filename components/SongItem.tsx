@@ -5,7 +5,7 @@ import Vertical from "../public/images/more-vertical.svg";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useMyStore } from "./app/store";
 import useOutsideAlerter from "./hooks/useOutsideAlerter";
-import {SuccessToast } from "../toast/toasts";
+import {ErrorToast, SuccessToast } from "../toast/toasts";
 
 type SongItemProps = {
     title: string,
@@ -27,8 +27,8 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const removeLikes = useMyStore((state: any) => state.removeLikes);
     const addCollection = useMyStore((state: any) => state.addCollection);
     const removeCollection = useMyStore((state: any) => state.removeCollection);
-    // console.log(likes);
-    console.log(collection);
+    console.log(likes);
+    // console.log(collection);
     // console.log(likes);
     
     
@@ -36,7 +36,8 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     const handleLike = () => {
         if(!like) {
             setLike(true);
-            addLikes({title, artist, src, type, id})
+            const exists =  likes.some((item: any) => item.id === id); //check if item already exists in likes array
+            exists ? '' : addLikes({title, artist, src, type, id});  // uses the result to determine if the selected item should be added.
         } else {
             setLike(false);
             removeLikes(id);
@@ -48,8 +49,13 @@ const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProp
     }
 
     const handleAddToCollection = () => {
-        addCollection({title, artist, src, type, id});
-        SuccessToast('Added To Collections');
+        const exists =  collection.some((item: any) => item.id === id);
+        if (exists) {
+            ErrorToast('Item already exists');
+        } else {
+            SuccessToast('Added To Collections');
+            addCollection({title, artist, src, type, id});
+        }
         // console.log('collection');
     }
     
