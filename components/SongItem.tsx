@@ -10,18 +10,18 @@ import {ErrorToast, SuccessToast } from "../toast/toasts";
 type SongItemProps = {
     title: string,
     artist: string,
-    duration: ReactNode,
+    duration: string,
     src: string,
     type: string,
     path: string,
     id: number
   };
 
-const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProps) => {
-    const [like, setLike] = useState(false);
-    const [toopTip, setToolTip] = useState(false);
-
-    const likes = useMyStore((state:any) => state.likes );
+  const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProps) => {
+      const [like, setLike] = useState(false);
+      const [toopTip, setToolTip] = useState(false);
+      
+      const likes = useMyStore((state:any) => state.likes );
     const collection = useMyStore((state:any) => state.collection );
     const addLikes = useMyStore((state: any) => state.addLikes);
     const removeLikes = useMyStore((state: any) => state.removeLikes);

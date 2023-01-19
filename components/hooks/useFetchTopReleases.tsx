@@ -13,7 +13,12 @@ const fetchTopReleases = async () => {
 }
 
 const useFetchTopReleases = () => {
-    return useQuery('releases', fetchTopReleases);
+    return useQuery('releases', fetchTopReleases
+    , { 
+        refetchOnMount: false, 
+        refetchOnWindowFocus: false 
+      }
+    );
 }
  
 export default useFetchTopReleases;

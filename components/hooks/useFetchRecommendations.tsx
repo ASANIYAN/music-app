@@ -12,7 +12,12 @@ const fetchSongRecommendations = async () => {
 }
 
 const useFetchRecommendations = () => {
-    return useQuery('recommendations', fetchSongRecommendations);
+    return useQuery('recommendations', fetchSongRecommendations
+    , { 
+        refetchOnMount: false, 
+        refetchOnWindowFocus: false 
+      }
+      );
 }
  
 export default useFetchRecommendations;
