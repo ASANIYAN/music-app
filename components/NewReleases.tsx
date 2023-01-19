@@ -12,6 +12,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from "next/link";
 import useFetchTopReleases from "./hooks/useFetchTopReleases";
+import { useMyStore } from "./app/store";
 
 
 export const NewReleasesHeading = () => {
@@ -27,8 +28,13 @@ type ReleaseProps = {
 };
 
 const NewRelease = ({ title, src, id } : ReleaseProps ) => {
-    return (
-    <Link href={`/album/${id}`} className="max-w-[180px]">
+  const setImage = useMyStore((state: any) => state.setAlbumImg);
+  const handleClick = () => {
+    setImage(src);
+    console.log(src);
+  }
+  return (
+    <Link href={`/album/${id}`} className="max-w-[180px]" onClick={handleClick}>
         <Image src={src} width={150} height={10} alt={`Release1`} className="rounded-[25px]" />
         <small className="text-[12px] px-3 font-normal"> {title} </small>
     </Link>

@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { useMyStore } from '../components/app/store';
 
 const courier = Courier_Prime({
     subsets: ['latin'],
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
   const [openNav, setOpenNav] = useState(false);
   const router = useRouter();
+  const albumImg = useMyStore((state:any) => state.albumImg);
   
   const HandleClick = () => {
     setOpenNav(true);
@@ -34,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <main className={`${courier.variable} font-courier`}>
         { router.pathname === '/album/[id]' && 
         <div
-        style={{background: 'url(/images/Lead-image.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}
+        style={{background: `url(${albumImg})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}
         className={`bg-center bg-cover bg-no-repeat fixed top-0 left-0 bottom-0 right-0 opacity-10 -z-10`}
         >
         </div>

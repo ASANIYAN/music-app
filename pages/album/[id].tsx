@@ -5,6 +5,7 @@ import { MdPlaylistAdd } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 import { headers } from "../../components/api-headers";
+import { useMyStore } from "../../components/app/store";
 import NavbarDesktop from "../../components/navbar/NavbarDesktop";
 import SongItem from "../../components/SongItem";
 
@@ -59,19 +60,18 @@ type albumProp = {
 }
 
 const AlbumInfo = ({ item }: albumProp) => {
-
-    // console.log(item);
-    const [isLoading, setIsLoading] = useState(true);
+  
+  const albumImg = useMyStore((state:any) => state.albumImg);
+  const [isLoading, setIsLoading] = useState(true);
     
-    useEffect(() => {
-        if (item) {
-            setIsLoading(false);
-        }
-    }, [item])
+  useEffect(() => {
+      if (item) {
+          setIsLoading(false);
+      }
+  }, [item])
 
-    return (
-        <>
-
+  return (
+      <>
         <section className='mt-4 sm:mt-8 sm:flex h-screen z-50'>
           <NavbarDesktop />
           
@@ -79,7 +79,7 @@ const AlbumInfo = ({ item }: albumProp) => {
 
             <section className='flex flex-col md:flex-row md:-mt-2 mb-6'>
                 <div className=''>
-                <Image src={"/images/Lead-image.svg"} width={280} height={280} alt={"album-image"} className="sm:pl-6" />
+                <Image src={`${albumImg}`} width={280} height={280} alt={"album-image"} className="sm:pl-6" />
                 </div>
                 
                 <section className="mt-16 sm:ml-6 text-left">
@@ -131,7 +131,7 @@ const AlbumInfo = ({ item }: albumProp) => {
                     
         </section>
 
-        </>
+      </>
     );
 }
  

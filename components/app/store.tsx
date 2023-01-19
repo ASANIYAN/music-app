@@ -10,6 +10,7 @@ type Item = {
     id: string
 }
 
+
 type ItemState = {
     collection: Item[],
     likes: Item[],
@@ -20,6 +21,8 @@ type ItemState = {
 };
 //define the store
 export const useMyStore = create<ItemState>((set, get) => ({
+    albumImg: '',
+    setAlbumImg: (value: string) => set(state => ({...state, albumImg: value})),
     collection: [],
     likes: [],
     addCollection: (item: Item) => {

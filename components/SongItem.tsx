@@ -21,7 +21,7 @@ type SongItemProps = {
       const [like, setLike] = useState(false);
       const [toopTip, setToolTip] = useState(false);
       
-      const likes = useMyStore((state:any) => state.likes );
+    const likes = useMyStore((state:any) => state.likes );
     const collection = useMyStore((state:any) => state.collection );
     const addLikes = useMyStore((state: any) => state.addLikes);
     const removeLikes = useMyStore((state: any) => state.removeLikes);
