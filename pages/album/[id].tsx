@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdPlaylistAdd } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
@@ -43,7 +43,6 @@ export const getStaticProps = async ({ params }: StaticProps) => {
   const id = params.id;
   const options = {
     method: 'GET',
-    // params: {id, per_page: '20', page: '1'},
     headers: headers,
   };
 //   useQuery('releases', fetchTopReleases);
@@ -62,6 +61,8 @@ type albumProp = {
 const AlbumInfo = ({ item }: albumProp) => {
   
   const albumImg = useMyStore((state:any) => state.albumImg);
+  const title = useMyStore((state:any) => state.title);
+  const fullTitle = useMyStore((state:any) => state.fullTitle);
   const [isLoading, setIsLoading] = useState(true);
     
   useEffect(() => {
@@ -83,11 +84,14 @@ const AlbumInfo = ({ item }: albumProp) => {
                 </div>
                 
                 <section className="mt-16 sm:ml-6 text-left">
-                    <h1 className="title text-[#A4C7C6] font-semibold text-2xl sm:text-4xl"> Tomorrow tunes </h1>
+                    <h1 className="title text-[#A4C7C6] font-semibold text-2xl sm:text-4xl"> {title} </h1>
                     <div className="text-color1 text-sm font-normal">
-                        <p className="max-w-md mt-2">  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis  </p>
+                        <p className="max-w-md mt-2"> {fullTitle} </p>
                         <div className="mt-1">
-                            <span className="song_count">64 songs -</span><span className="total_Time"> 16hrs+</span>
+                            <span className="song_count">
+                              { item.album_appearances.length } { item.album_appearances.length === 1 ? 'song' : 'songs' } 
+                            </span>
+                            <span className="total_Time"> </span>
                         </div>
                     </div>
                     <section className="text-white mt-6 flex-col sm:flex-row flex md:justify-start ">

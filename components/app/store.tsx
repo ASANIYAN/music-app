@@ -10,10 +10,15 @@ type Item = {
     id: string
 }
 
-
 type ItemState = {
     collection: Item[],
     likes: Item[],
+    albumImg: string,
+    title: string,
+    fullTitle: string,
+    setAlbumImg: (value: string) => void,
+    setFullTitle: (value: string) => void,
+    setTitle: (value: string) => void,
     addCollection: (item : Item) => void,
     removeCollection: (id: number) => void,
     addLikes: (item : Item) => void,
@@ -23,6 +28,10 @@ type ItemState = {
 export const useMyStore = create<ItemState>((set, get) => ({
     albumImg: '',
     setAlbumImg: (value: string) => set(state => ({...state, albumImg: value})),
+    fullTitle: '',
+    setFullTitle: (value: string) => set(state => ({...state, fullTitle: value})),
+    title: '',
+    setTitle: (value: string) => set(state => ({...state, title: value})),
     collection: [],
     likes: [],
     addCollection: (item: Item) => {

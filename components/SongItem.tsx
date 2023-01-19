@@ -68,7 +68,7 @@ type SongItemProps = {
             <section className="bg-color8 flex sm:justify-between items-center py-2 sm:py-1.5 pl-2 sm:pl-5  rounded-[15px] w-full">
                 <div className="flex">
                     <Image src={src} height={40} width={40} alt="musicImg" className="mr-2" />
-                    <div className="w-fit ml-5 justify-center items-center hidden sm:flex">
+                    <div className="w-fit ml-5 justify-center items-center hidden sm:flex cursor-pointer">
                         <HeartIcon color='#E5524A' like={like} handleLike={handleLike} />
                     </div>
                 </div>

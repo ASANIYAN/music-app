@@ -22,15 +22,20 @@ export const NewReleasesHeading = () => {
 }
 
 type ReleaseProps = {
+    full_title: string,
     title: string,
     src: string
     id: number,
 };
 
-const NewRelease = ({ title, src, id } : ReleaseProps ) => {
+const NewRelease = ({ title, src, id, full_title } : ReleaseProps ) => {
   const setImage = useMyStore((state: any) => state.setAlbumImg);
+  const setFullTitle = useMyStore((state: any) => state.setFullTitle);
+  const setTitle = useMyStore((state: any) => state.setTitle);
   const handleClick = () => {
     setImage(src);
+    setFullTitle(full_title);
+    setTitle(title);
     console.log(src);
   }
   return (
@@ -108,7 +113,8 @@ const NewReleases = () => {
               <SwiperSlide key={releases.item.id}>
                   <NewRelease
                   id={releases.item.id} 
-                  title={releases.item.name} 
+                  title={releases.item.name}
+                  full_title={releases.item.full_title}
                   src={releases.item.cover_art_thumbnail_url} 
                   />
               </SwiperSlide>
