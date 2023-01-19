@@ -19,7 +19,7 @@ const Collections = () => {
             <section className='mt-4 sm:mt-8 sm:flex h-screen z-50'>
             <NavbarDesktop />
             
-            <section className="w-full md:ml-6">
+            <section className="w-full sm:ml-6">
                 <Tab tabs={tabList} activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className="mt-3 w-full">
                     { activeTab === tabList[0].alias && <MyCollections /> } 

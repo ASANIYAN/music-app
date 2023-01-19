@@ -1,12 +1,38 @@
+import { useState } from "react";
+import { FaPlay } from "react-icons/fa";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { collectionProps } from "../../props/types";
+import { SuccessToast } from "../../toast/toasts";
 import { useMyStore } from "../app/store";
 
 
 const LikeItem = ({ title, artist, duration, src, type, path, id }: collectionProps) => {
+    const [click, setClick] = useState(false);
+    const removeLikes = useMyStore((state: any) => state.removeLikes);
+    
+    const handleClick = () => {
+        setClick(click => !click);
+    };
+    
+    const handleLikeItemRemoval = () => {
+        removeLikes(id);
+        SuccessToast('Item removed successfully');
+    } 
 
     return(
-            <div 
-            className={`h-[240px] w-full rounded-[20px]`}
+        <div>
+            { click && 
+                <div className="my-2 text-center flex justify-center"> 
+                    <FaPlay className="mr-3 text-color4 text-lg" />
+                    <RiDeleteBin5Line  
+                    onClick={handleLikeItemRemoval}
+                    className="ml-3 text-xl cursor-pointer" 
+                    />  
+                </div> 
+            }
+            <div
+            onClick={handleClick} 
+            className={`h-[320px] sm:h-[240px] w-full rounded-[20px] cursor-pointer`}
             style= {{
                         background: ` 
                         linear-gradient(
@@ -22,9 +48,10 @@ const LikeItem = ({ title, artist, duration, src, type, path, id }: collectionPr
                 className="flex flex-col justify-end pl-6 pb-6 h-full" 
                 >
                     <p className="text-lg md:text-2xl"> {title} </p>
-                    <p className="text-[10px] -mt-1"> {artist} </p>
+                    <p className="text-[12px] -mt-1"> {artist} </p>
                 </div>
             </div>
+        </div>
     );
 
 };

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Reggae  from "../public/images/Reggae.svg";
 import HeartIcon from "../public/icon/HeartIcon";
 import Vertical from "../public/images/more-vertical.svg";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMyStore } from "./app/store";
 import useOutsideAlerter from "./hooks/useOutsideAlerter";
 import {ErrorToast, SuccessToast } from "../toast/toasts";
@@ -36,10 +36,16 @@ type SongItemProps = {
     const handleLike = () => {
         if(!like) {
             setLike(true);
-            const exists =  likes.some((item: any) => item.id === id); //check if item already exists in likes array
-            exists ? '' : addLikes({title, artist, src, type, id});  // uses the result to determine if the selected item should be added.
+            
+            // checks if item already exists in likes array
+            const exists =  likes.some((item: any) => item.id === id); 
+            
+            // uses the result to determine if the selected item should be added.
+            exists ? '' : addLikes({title, artist, src, type, id});  
         } else {
             setLike(false);
+
+            // removes item for likes array using the unique id of each item
             removeLikes(id);
         }
     };
@@ -51,16 +57,14 @@ type SongItemProps = {
     const handleAddToCollection = () => {
         const exists =  collection.some((item: any) => item.id === id);
         if (exists) {
-            ErrorToast('Item already exists');
+            ErrorToast('Item already exists in collection');
         } else {
             SuccessToast('Added To Collections');
             addCollection({title, artist, src, type, id});
         }
-        // console.log('collection');
     }
     
     const ItemRef = useRef<null>(null);
-    // const buttonRef = useRef<null>(null);
     useOutsideAlerter(ItemRef, setToolTip);
 
     return (
