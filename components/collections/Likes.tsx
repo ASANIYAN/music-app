@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { collectionProps } from "../../props/types";
 import { SuccessToast } from "../../toast/toasts";
 import { useMyStore } from "../app/store";
+import { GetItem, SetItem } from "../hooks/useLocalStorage";
 
 
 const LikeItem = ({ title, artist, duration, src, type, path, id }: collectionProps) => {
@@ -58,7 +59,19 @@ const LikeItem = ({ title, artist, duration, src, type, path, id }: collectionPr
 
 const Likes = () => {
    
-    const likes = useMyStore((state:any) => state.likes );
+    const likes = useMyStore((state:any) => state.likes);
+    const addLikes = useMyStore((state: any) => state.addLikes);
+    
+    useEffect(() => {
+        SetItem('likes', likes);
+        // const storedValue = GetItem('likes');
+        // if (storedValue !== undefined) {
+        //     addLikes(storedValue);
+        //   }
+    }, [likes]);
+
+    console.log(localStorage.getItem('likes'))
+    console.log(likes)
 
     return (
         <>

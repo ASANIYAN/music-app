@@ -2,10 +2,11 @@ import Image from "next/image";
 import Reggae  from "../public/images/Reggae.svg";
 import HeartIcon from "../public/icon/HeartIcon";
 import Vertical from "../public/images/more-vertical.svg";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMyStore } from "./app/store";
 import useOutsideAlerter from "./hooks/useOutsideAlerter";
 import {ErrorToast, SuccessToast } from "../toast/toasts";
+import { SetItem } from "./hooks/useLocalStorage";
 
 type SongItemProps = {
     title: string,
@@ -18,9 +19,12 @@ type SongItemProps = {
   };
 
   const SongItem = ({ title, artist, duration, src, type, path, id }: SongItemProps) => {
-      const [like, setLike] = useState(false);
-      const [toopTip, setToolTip] = useState(false);
-      
+    
+    const [like, setLike] = useState(false);
+    const [toopTip, setToolTip] = useState(false);
+    const ItemRef = useRef<null>(null);
+    
+    // gets items from store  
     const likes = useMyStore((state:any) => state.likes );
     const collection = useMyStore((state:any) => state.collection );
     const addLikes = useMyStore((state: any) => state.addLikes);
@@ -32,7 +36,17 @@ type SongItemProps = {
     // console.log(likes);
     
     
+    
+    useOutsideAlerter(ItemRef, setToolTip);
 
+    useEffect(() => {
+        if (typeof window !== "undefined") SetItem('likes', likes);
+    }, [likes]);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") SetItem('collection', collection);
+    }, [collection]);
+    
     const handleLike = () => {
         if(!like) {
             setLike(true);
@@ -64,8 +78,7 @@ type SongItemProps = {
         }
     }
     
-    const ItemRef = useRef<null>(null);
-    useOutsideAlerter(ItemRef, setToolTip);
+    
 
     return (
         <>

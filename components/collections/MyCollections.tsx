@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { collectionProps } from "../../props/types";
 import { useMyStore } from "../app/store";
 import { FaPlay } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { SuccessToast } from "../../toast/toasts";
+import { GetItem, SetItem } from "../hooks/useLocalStorage";
 
 
 const CollectionItem = ({ title, artist, duration, src, type, path, id }: collectionProps) => {
     const [click, setClick] = useState(false);
+    const collection = useMyStore((state:any) => state.collection );
     const removeCollection = useMyStore((state: any) => state.removeCollection);
     
     const handleClick = () => {
@@ -17,7 +19,10 @@ const CollectionItem = ({ title, artist, duration, src, type, path, id }: collec
     const handleCollectionItemRemoval = () => {
         removeCollection(id);
         SuccessToast('Item removed successfully');
-    } 
+        SetItem('collection', collection);
+    }
+    
+
 
     return(
         <div>
@@ -61,16 +66,39 @@ const CollectionItem = ({ title, artist, duration, src, type, path, id }: collec
 const MyCollections = () => {
     
     const collection = useMyStore((state:any) => state.collection );
-    console.log(collection);
+    const addCollection = useMyStore((state: any) => state.addCollection);
+    // const [ renderedCollection, setRenderedCollection ] = useState(collection);
+    // console.log(collection);
+    // setRenderedCollection()
+    // console.log(renderedCollection)
+
+    // if (typeof window !== "undefined") {
+    //     collection = GetItem('collection') !== undefined ? GetItem('collection') : collection;
+    // }
+    // const addCollection = useMyStore((state: any) => state.addCollection);
+
+    // useEffect(() => {
+    //     setRenderedCollection(GetItem('collection'));
+    //     // if (renderedCollection && renderedCollection !== null) {
+    //     //     addCollection(...renderedCollection);
+    //     // }
+    // }, [])
+
+    // useEffect(() => {
+    //     for (let i = 0; i < renderedCollection.length; i++) {
+    //         addCollection(renderedCollection[i])
+    //     }
+    // }, [renderedCollection])
+    
 
     return (
         <>
-        { collection.length === 0 && 
+        { collection && collection.length === 0 && 
             <p className="text-2xl text-center"> You have no collection </p>
         }
-        { collection.length > 0 && 
+        { collection && collection.length > 0 && 
             <section className="grid grid-cols-collection gap-6 w-full">
-                { collection.map((item: any) => (
+                {  collection.map((item: any) => (
                     <CollectionItem
                     key={item.id} 
                     title={item.title} 
